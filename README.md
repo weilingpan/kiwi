@@ -11,5 +11,6 @@
 
 ## deploy on k8s
 - kubectl apply -f deployment.yml
-- kubectl exec -it <kiwi-web-deployment> -- /Kiwi/manage.py migrate
-- 
+- kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py migrate
+- kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py createsuperuser
+- kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py refresh_permissions
