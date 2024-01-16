@@ -22,7 +22,7 @@ spec:
         - name: KIWI_DB_ENGINE
           value: "django.db.backends.postgresql"
         - name: KIWI_DB_HOST
-          value: "kiwi-db"
+          value: "kiwi-db-service"
         - name: KIWI_DB_PORT
           value: "5432"
         - name: KIWI_DB_NAME
