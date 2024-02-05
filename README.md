@@ -14,3 +14,6 @@
 - kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py migrate
 - kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py createsuperuser
 - kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py refresh_permissions
+
+## API
+https://kiwitcms.readthedocs.io/en/latest/modules/tcms.rpc.api.testcase.html#tcms.rpc.api.testcase.TestCase.comments
