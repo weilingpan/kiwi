@@ -9,54 +9,61 @@ print(f"user: {user}")
 classification = rpc_client.Classification.filter({})[0]
 print(f"classification: {classification}")
 
-# create a separate Product, Version & TestCase
-product = rpc_client.Product.create({
-    'name': 'Product created at %s' % datetime.now().isoformat(),
-    'classification': classification['id'],
-})
+list_products = rpc_client.Product.filter()
+print(f"product={list_products}")
+
+product = rpc_client.Product.filter({'name': 'Product created'})[0]
+print(product)
+
+# product = rpc_client.Product.create({
+#     'name': 'Product created',
+#     'classification': classification['id'],
+# })
 
 version = rpc_client.Version.create({
     'product': product['id'],
-    'value': 'ver-%s' % datetime.now().isoformat(),
+    'value': f'version-auto-{datetime.now().isoformat()}',
 })
 
 # create TestPlan
 test_plan = rpc_client.TestPlan.create({
-    'name': 'TP: created at %s' % datetime.now().isoformat(),
+    'name': f'TP: created at {datetime.now().isoformat()}',
     'text': 'A script is creating this TP and adds TCs and TRs to it to establish a performance baseline',
-    'type': 7, # Performance
+    'type': 4, # 4: Interation, 7: Performance
     'product': product['id'],
     'product_version': version['id'],
     'is_active': True,
 })
 
-RANGE_SIZE = 10
-test_cases = []
+test_cases = [] # for run
+# test case setting
 priority = rpc_client.Priority.filter({})[0]
-category = rpc_client.Category.filter({
-    'product': product['id'],
-})[0]
+category = rpc_client.Category.filter({'product': product['id'],})[0]
 confirmed_status = rpc_client.TestCaseStatus.filter({'is_confirmed': True})[0]
 
-for j in range(RANGE_SIZE):
+for i in range(5):
     test_case = rpc_client.TestCase.create({
-        'summary': 'Case created at %s' % datetime.now().isoformat(),
+        'summary': f'Case {i+1} created',
         'product': product['id'],
         'category': category['id'],
         'priority': priority['id'],
         'case_status': confirmed_status['id'],
     })
+    print(test_case)
+#     rpc_client.TestCase.comments(test_case['id'])
 
-    test_cases.append(test_case)
-    rpc_client.TestPlan.add_case(test_plan['id'], test_case['id'])
+#     test_cases.append(test_case)
+#     rpc_client.TestPlan.add_case(test_plan['id'], test_case['id'])
     
-# create build, test run & test executions
-pass_status = rpc_client.TestExecutionStatus.filter({'weight__gt': 0})[0]
-build = rpc_client.Build.create({
-    'name': 'b.%s' % datetime.now().isoformat(),
-    'description': 'the product build at %s' % datetime.now().isoformat(),
-    'version': version['id'],
-})
+
+    
+# # create build, test run & test executions
+# pass_status = rpc_client.TestExecutionStatus.filter({'weight__gt': 0})[0]
+# build = rpc_client.Build.create({
+#     'name': 'b.%s' % datetime.now().isoformat(),
+#     'description': 'the product build at %s' % datetime.now().isoformat(),
+#     'version': version['id'],
+# })
 
 
 # # create a separate TestPlan
