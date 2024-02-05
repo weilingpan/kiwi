@@ -48,7 +48,12 @@ for i in range(3):
         'category': category['id'],
         'priority': priority['id'],
         'case_status': confirmed_status['id'],
+        'text': f"text for case {i+1}"
     })
+    # id, create_date, is_automated, script, arguments, extra_link, summary,
+    # requirement, notes, text, setup_duration, testing_duration, case_status,
+    # category, priority, author, default_tester, reviewer
+    # ref: https://kiwitcms.readthedocs.io/en/latest/modules/tcms.testcases.models.html#tcms.testcases.models.TestCase
     print(test_case)
     rpc_client.TestCase.add_comment(test_case['id'], f"comment for case {i+1}")
 
