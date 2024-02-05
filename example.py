@@ -41,7 +41,7 @@ priority = rpc_client.Priority.filter({})[0]
 category = rpc_client.Category.filter({'product': product['id'],})[0]
 confirmed_status = rpc_client.TestCaseStatus.filter({'is_confirmed': True})[0]
 
-for i in range(5):
+for i in range(3):
     test_case = rpc_client.TestCase.create({
         'summary': f'Case {i+1} created',
         'product': product['id'],
@@ -50,10 +50,10 @@ for i in range(5):
         'case_status': confirmed_status['id'],
     })
     print(test_case)
-#     rpc_client.TestCase.comments(test_case['id'])
+    rpc_client.TestCase.add_comment(test_case['id'], f"comment for case {i+1}")
 
-#     test_cases.append(test_case)
-#     rpc_client.TestPlan.add_case(test_plan['id'], test_case['id'])
+    test_cases.append(test_case)
+    rpc_client.TestPlan.add_case(test_plan['id'], test_case['id'])
     
 
     
