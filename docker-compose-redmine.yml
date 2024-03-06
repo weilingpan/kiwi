@@ -1,29 +1,66 @@
-version: '3.8'
+version: '2'
 
 services:
-  redmine:
-    image: redmine
-    ports:
-      - "3000:3000"
-    environment:
-      - REDMINE_DB_POSTGRES=postgres
-      - REDMINE_DB_USERNAME=redmine
-      - REDMINE_DB_PASSWORD=redmine
-    depends_on:
-      - postgres
-    volumes:
-      - redmine_data:/usr/src/redmine/files
+    db:
+        container_name: kiwi_db
+        image: postgres:latest
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        restart: always
+        environment:
+            POSTGRES_DB: kiwi, redmine
+            POSTGRES_USER: kiwi, redmine
+            POSTGRES_PASSWORD: kiwi, redmine
 
-  postgres:
-    image: postgres:13
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=redmine
-      - POSTGRES_USER=redmine
-      - POSTGRES_PASSWORD=redmine
+    web:
+        container_name: kiwi_web
+        depends_on:
+            - db
+        restart: always
+        image: kiwitcms/kiwi:latest
+        ports:
+            - "80:8080"
+            - "443:8443"
+        volumes:
+            - uploads:/Kiwi/uploads:Z
+        environment:
+            KIWI_DB_ENGINE: django.db.backends.postgresql
+            KIWI_DB_HOST: db
+            KIWI_DB_PORT: 5432
+            KIWI_DB_NAME: kiwi
+            KIWI_DB_USER: kiwi
+            KIWI_DB_PASSWORD: kiwi
+        cap_drop:
+          - ALL
+          
+    redmine:
+        container_name: redmine_web
+        image: redmine
+        ports:
+          - "3000:3000"
+        environment:
+          - REDMINE_DB_POSTGRES=postgres
+          - REDMINE_DB_USERNAME=redmine
+          - REDMINE_DB_PASSWORD=redmine
+        depends_on:
+          - postgres
+        volumes:
+          - redmine_data:/usr/src/redmine/files
+
+    postgres:
+        container_name: redmine_db
+        image: postgres:13
+        volumes:
+          - postgres_data:/var/lib/postgresql/data
+        environment:
+          - POSTGRES_DB=redmine
+          - POSTGRES_USER=redmine
+          - POSTGRES_PASSWORD=redmine
+
 
 volumes:
-  redmine_data:
-  postgres_data:
+    db_data:
+    uploads:
+    redmine_data:
+    postgres_data:
 
