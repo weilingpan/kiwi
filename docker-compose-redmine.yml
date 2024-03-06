@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  redmine:
+    image: redmine
+    ports:
+      - "3000:3000"
+    environment:
+      - REDMINE_DB_POSTGRES=postgres
+      - REDMINE_DB_USERNAME=redmine
+      - REDMINE_DB_PASSWORD=redmine
+    depends_on:
+      - postgres
+    volumes:
+      - redmine_data:/usr/src/redmine/files
+
+  postgres:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=redmine
+      - POSTGRES_USER=redmine
+      - POSTGRES_PASSWORD=redmine
+
+volumes:
+  redmine_data:
+  postgres_data:
+
