@@ -14,6 +14,8 @@
 - kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py migrate
 - kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py createsuperuser
 - kubectl exec -it <kiwi-web-pod> -- /Kiwi/manage.py refresh_permissions
+- /Kiwi/manage.py set_domain public.tenant.kiwitcms.org
+- browser: public.tenant.kiwitcms.org
 
 ## API
 https://kiwitcms.readthedocs.io/en/latest/modules/tcms.rpc.api.testcase.html#tcms.rpc.api.testcase.TestCase.comments
