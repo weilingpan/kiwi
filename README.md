@@ -1,6 +1,7 @@
 # kiwi
 
 ## deploy on docker compose
+! 在 windows 的話, 建議使用 ubuntu 環境
 - docker compose up -d (or docker compose -f docker-compose-redmine.yml up -d)
 - browser: https://localhost/
 - docker exec -it kiwi_web /Kiwi/manage.py migrate
